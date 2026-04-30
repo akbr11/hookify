@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ⚡ Hookify AI
 
-## Getting Started
+**Hookify** adalah generator konten viral berbasis AI yang dirancang untuk membantu kreator, marketer, dan pemilik bisnis membuat hook, caption, dan strategi konten sosial media yang sangat engaging dalam hitungan detik.
 
-First, run the development server:
+![Futuristic UI](https://img.shields.io/badge/UI-Futuristic_Dark-indigo)
+![Next.js](https://img.shields.io/badge/Framework-Next.js_15-black)
+![OpenRouter](https://img.shields.io/badge/AI-OpenRouter-blue)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## ✨ Fitur Utama
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Futuristic Dark Mode**: Antarmuka pengguna yang modern, bersih, dan bertema gelap untuk kenyamanan mata.
+- **ChatGPT-Style Interaction**: Area input yang intuitif dengan textarea otomatis membesar dan tombol kirim berdampingan.
+- **AI-Powered Content**: Menghasilkan hook viral, caption kreatif, dan hashtag populer menggunakan model AI terbaru via OpenRouter.
+- **Prompt History**: Menyimpan riwayat prompt sebelumnya di bagian atas halaman (horizontal scroll) yang tersimpan di browser (`localStorage`).
+- **Single Column Layout**: Desain simpel satu kolom tanpa sidebar yang berfokus pada konten.
+- **Auto-Scroll to Results**: Fokus otomatis ke hasil yang baru digenerate atau dimuat dari history.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend**: Next.js 15 (App Router), React, TypeScript.
+- **Styling**: Tailwind CSS, Shadcn/UI, Lucide Icons.
+- **State & Data**: TanStack Query (React Query).
+- **AI Integration**: OpenRouter SDK.
 
-## Learn More
+## 🚀 Memulai
 
-To learn more about Next.js, take a look at the following resources:
+### Prasyarat
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Pastikan Anda sudah menginstal Node.js (versi 18 atau lebih baru).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Instalasi
 
-## Deploy on Vercel
+1. Clone repositori:
+   ```bash
+   git clone https://github.com/akbr11/hookify.git
+   cd hookify
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Instal dependensi:
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Konfigurasi Environment Variables:
+   Buat file `.env.local` di root direktori dan tambahkan API Key OpenRouter Anda:
+   ```env
+   OPENROUTER_API_KEY=your_api_key_here
+   ```
+
+4. Jalankan server pengembangan:
+   ```bash
+   npm run dev
+   ```
+
+Buka [http://localhost:3000](http://localhost:3000) di browser Anda untuk melihat hasilnya.
+
+## 📝 Lisensi
+
+Proyek ini dibuat untuk tujuan pembelajaran dan pengembangan konten kreatif.
