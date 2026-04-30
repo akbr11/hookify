@@ -45,7 +45,9 @@ export async function POST(req: Request) {
         "hooks": ["...", "...", "..."],
         "caption": "...",
         "hashtags": ["...", "..."],
-        "feedback": "..."
+        "feedback": "...",
+        "engagementSuggestions": "...",
+        "analyticsFeedback": "..."
         }
 
         Rules:

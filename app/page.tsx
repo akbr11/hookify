@@ -37,6 +37,7 @@ import { Menu, History, Plus, Send } from "lucide-react";
 
 export default function Home() {
   const [contentIdea, setContentIdea] = useState("");
+  const [activePrompt, setActivePrompt] = useState("");
   const [result, setResult] = useState<GenerationResult | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
@@ -68,13 +69,6 @@ export default function Home() {
     }
   }, [contentIdea]);
 
-  // Scroll to results when they appear
-  useEffect(() => {
-    if (result && resultTopRef.current) {
-      resultTopRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [result]);
-
   const mutation = useMutation({
     mutationFn: async (content: string) => {
       const response = await fetch("/api/generate", {
@@ -91,7 +85,7 @@ export default function Home() {
       setResult(data);
       const newEntry: HistoryEntry = {
         id: Date.now().toString(),
-        prompt: contentIdea,
+        prompt: activePrompt,
         timestamp: Date.now(),
         result: data,
       };
@@ -99,19 +93,32 @@ export default function Home() {
     },
   });
 
+  // Scroll to results when they appear
+  useEffect(() => {
+    if ((result || mutation.isPending) && resultTopRef.current) {
+      resultTopRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [result, mutation.isPending]);
+
   const selectHistoryEntry = (entry: HistoryEntry) => {
-    setContentIdea(entry.prompt);
+    setActivePrompt(entry.prompt);
+    setContentIdea("");
     setResult(entry.result);
   };
 
   const startNewChat = () => {
     setContentIdea("");
+    setActivePrompt("");
     setResult(null);
   };
 
   const handleGenerate = () => {
     if (!contentIdea.trim()) return;
-    mutation.mutate(contentIdea);
+    const promptToSend = contentIdea.trim();
+    setActivePrompt(promptToSend);
+    setContentIdea("");
+    setResult(null);
+    mutation.mutate(promptToSend);
   };
 
   const copyToClipboard = (text: string, index: number) => {
@@ -181,7 +188,7 @@ export default function Home() {
         <div className="flex-1 overflow-y-auto pb-40 pt-8">
           <div ref={resultTopRef} />
           <div className="max-w-3xl mx-auto px-6 md:px-8 space-y-12">
-            {!result && !mutation.isPending && (
+            {!activePrompt && !mutation.isPending && (
               <div className="h-[50vh] flex flex-col items-center justify-center text-center space-y-6 animate-in fade-in zoom-in duration-700">
                 <div className="relative">
                   <div className="absolute inset-0 blur-3xl bg-indigo-500/20 rounded-full" />
@@ -196,6 +203,15 @@ export default function Home() {
                   <p className="text-slate-400 max-w-sm mx-auto text-lg">
                     Type your idea below to generate high-converting viral hooks.
                   </p>
+                </div>
+              </div>
+            )}
+
+            {/* Active Prompt (User Message) */}
+            {activePrompt && (
+              <div className="flex justify-end animate-in fade-in slide-in-from-right-4 duration-500">
+                <div className="max-w-[80%] bg-indigo-600/20 border border-indigo-500/30 rounded-2xl px-6 py-4 text-slate-200">
+                  <p className="text-lg leading-relaxed">{activePrompt}</p>
                 </div>
               </div>
             )}
@@ -331,7 +347,7 @@ export default function Home() {
                   }
                 }}
                 placeholder="Describe your content idea..."
-                className="flex-1 bg-transparent border-0 focus:ring-0 resize-none py-4 px-5 text-lg min-h-[64px] max-h-[200px] placeholder:text-slate-600 text-white"
+                className="flex-1 bg-transparent border-0 focus:ring-0 focus:outline-none outline-none resize-none py-4 px-5 text-lg min-h-[64px] max-h-[200px] placeholder:text-slate-600 text-white"
               />
               <Button 
                 onClick={handleGenerate}
