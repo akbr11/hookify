@@ -1,17 +1,3 @@
 Buatkan issue.md yang berisi perencanaan untuk nanti di implementasi oleh junior programmer atau model yang lebih murah.
 
 isi dari planning nya adalah sebagai berikut:
-
-saya sudah membuat api untuk koneksi dengan openrouter api, endpointnya /api/generate, yang menerima POST request dengan body berisi:
-{
-    "content": ""
-}
-
-project Hookify ini adalah untuk bantu user bikin konten yang punya peluang viral di platform seperti TikTok atau Instagram. output yang diharapkan adalah:
-- 3 hook viral (opening 3 detik)
-- caption optimal
-- hashtag relevan
-- saran peningkatan engagement
-- feedback kenapa konten bisa/kurang viral
-
-untuk model bisa menggunakan meta-llama/llama-3.2-3b-instruct:free
