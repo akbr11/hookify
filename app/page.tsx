@@ -40,7 +40,6 @@ export default function Home() {
   const [result, setResult] = useState<GenerationResult | null>(null);
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const resultTopRef = useRef<HTMLDivElement>(null);
 
@@ -122,183 +121,154 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen bg-slate-50 dark:bg-[#020617] overflow-hidden text-slate-900 dark:text-slate-100">
-      {/* Sidebar - Prompt History */}
-      <aside 
-        className={cn(
-          "flex flex-col bg-white dark:bg-[#0f172a] border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out",
-          isSidebarOpen ? "w-72" : "w-0 overflow-hidden"
-        )}
-      >
-        <div className="p-4 flex items-center justify-between">
-          <Button 
-            variant="outline" 
-            onClick={startNewChat}
-            className="flex-1 mr-2 border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 justify-start gap-2"
-          >
-            <Plus className="h-4 w-4" />
-            New Hook
-          </Button>
+    <div className="flex flex-col h-screen bg-[#020617] text-slate-100 overflow-hidden font-sans">
+      {/* Header */}
+      <header className="flex-none flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#020617]/80 backdrop-blur-md z-30">
+        <div className="flex items-center gap-3 group">
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white glow-indigo group-hover:scale-110 transition-transform">
+            <Zap className="h-5 w-5 fill-current" />
+          </div>
+          <div className="flex flex-col">
+            <span className="text-xl font-bold tracking-tight text-glow">
+              Hookify
+            </span>
+            <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-medium">
+              Future Content Gen
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
-            size="icon" 
-            onClick={() => setIsSidebarOpen(false)}
-            className="text-slate-500"
+            size="sm" 
+            onClick={startNewChat}
+            className="text-slate-400 hover:text-white hover:bg-slate-800 gap-2"
           >
-            <Menu className="h-4 w-4" />
+            <Plus className="h-4 w-4" />
+            New
           </Button>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-2 space-y-1">
-          <div className="px-3 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">
-            Previous Prompts
+          <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-indigo-900/30 border border-indigo-800">
+            <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
+            <span className="text-xs font-medium text-indigo-300">V4.1 Dark</span>
           </div>
-          {history.length === 0 ? (
-            <div className="px-3 py-8 text-center text-sm text-slate-400 italic">
-              No history yet
+        </div>
+      </header>
+
+      {/* Top History Bar */}
+      {history.length > 0 && (
+        <div className="flex-none bg-[#020617] border-b border-slate-800/50 py-3 px-4 z-20 overflow-hidden">
+          <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
+            <div className="flex-none flex items-center gap-2 text-[10px] font-bold text-slate-500 uppercase tracking-widest pl-2 border-r border-slate-800 pr-4">
+              <History className="h-3 w-3" />
+              History
             </div>
-          ) : (
-            history.map((entry) => (
+            {history.map((entry) => (
               <button
                 key={entry.id}
                 onClick={() => selectHistoryEntry(entry)}
-                className="w-full text-left px-3 py-2.5 text-sm rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors truncate flex items-center gap-2"
+                className="flex-none max-w-[150px] px-3 py-1.5 text-xs rounded-full bg-slate-900 border border-slate-800 hover:border-indigo-500/50 hover:bg-slate-800 transition-all truncate text-slate-400 hover:text-slate-200"
               >
-                <History className="h-3.5 w-3.5 text-slate-400" />
-                <span className="truncate">{entry.prompt}</span>
+                {entry.prompt}
               </button>
-            ))
-          )}
+            ))}
+          </div>
         </div>
-      </aside>
+      )}
 
       {/* Main Content Area */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
-        {/* Header */}
-        <header className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-[#020617]/50 backdrop-blur-md z-10">
-          <div className="flex items-center gap-4">
-            {!isSidebarOpen && (
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={() => setIsSidebarOpen(true)}
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-            )}
-            <div className="flex items-center gap-2 group">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white glow-indigo group-hover:scale-110 transition-transform">
-                <Zap className="h-5 w-5 fill-current" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-glow">
-                  Hookify
-                </span>
-                <span className="text-[10px] text-slate-500 uppercase tracking-[0.2em] font-medium">
-                  Future Content Gen
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1 px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 border border-indigo-100 dark:border-indigo-800">
-              <Sparkles className="h-3.5 w-3.5 text-indigo-600 dark:text-indigo-400" />
-              <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300">V4.0 Futuristic</span>
-            </div>
-          </div>
-        </header>
-
+      <main className="flex-1 relative overflow-hidden flex flex-col">
         {/* Results Scroll Area */}
-        <div className="flex-1 overflow-y-auto pb-32 pt-8">
+        <div className="flex-1 overflow-y-auto pb-40 pt-8">
           <div ref={resultTopRef} />
-          <div className="max-w-3xl mx-auto px-4 md:px-8 space-y-12">
+          <div className="max-w-3xl mx-auto px-6 md:px-8 space-y-12">
             {!result && !mutation.isPending && (
-              <div className="h-[60vh] flex flex-col items-center justify-center text-center space-y-6">
+              <div className="h-[50vh] flex flex-col items-center justify-center text-center space-y-6 animate-in fade-in zoom-in duration-700">
                 <div className="relative">
                   <div className="absolute inset-0 blur-3xl bg-indigo-500/20 rounded-full" />
-                  <div className="relative h-20 w-20 rounded-2xl bg-slate-100 dark:bg-slate-900 flex items-center justify-center border border-slate-200 dark:border-slate-800 animate-bounce">
-                    <Sparkles className="h-10 w-10 text-indigo-500" />
+                  <div className="relative h-24 w-24 rounded-3xl bg-slate-900 flex items-center justify-center border border-slate-800 glow-indigo">
+                    <Sparkles className="h-12 w-12 text-indigo-500" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                    What are we creating today?
+                  <h2 className="text-4xl font-bold tracking-tight text-white">
+                    What are we creating?
                   </h2>
-                  <p className="text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-                    Transform your ideas into high-converting social media hooks and captions.
+                  <p className="text-slate-400 max-w-sm mx-auto text-lg">
+                    Type your idea below to generate high-converting viral hooks.
                   </p>
                 </div>
               </div>
             )}
 
             {mutation.isPending && (
-              <div className="flex flex-col items-center justify-center py-12 space-y-4">
+              <div className="flex flex-col items-center justify-center py-20 space-y-6">
                 <div className="relative">
-                  <div className="h-16 w-16 border-4 border-indigo-600/20 border-t-indigo-600 rounded-full animate-spin" />
+                  <div className="h-20 w-20 border-4 border-indigo-600/10 border-t-indigo-600 rounded-full animate-spin" />
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <Zap className="h-6 w-6 text-indigo-600 animate-pulse" />
+                    <Zap className="h-8 w-8 text-indigo-600 animate-pulse" />
                   </div>
                 </div>
-                <p className="text-indigo-600 dark:text-indigo-400 font-medium animate-pulse">
-                  AI is crafting your viral content...
-                </p>
+                <div className="text-center space-y-1">
+                  <p className="text-indigo-400 font-bold tracking-widest uppercase text-xs">Processing</p>
+                  <p className="text-slate-400 animate-pulse text-sm">AI is crafting your viral content...</p>
+                </div>
               </div>
             )}
 
             {result && (
-              <div className="space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
-                {/* Section Header */}
-                <div className="flex items-center gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
-                  <Lightbulb className="h-5 w-5 text-yellow-500" />
-                  <h2 className="text-lg font-bold">Suggested Hooks</h2>
-                </div>
-
+              <div className="space-y-10 animate-in fade-in slide-in-from-bottom-8 duration-700">
                 {/* Hooks Cards */}
-                <div className="grid gap-4">
-                  {result.hooks.map((hook, index) => (
-                    <div 
-                      key={index}
-                      className="group relative glass dark:glass-dark p-6 rounded-2xl hover:border-indigo-500/50 transition-all duration-300"
-                    >
-                      <div className="flex justify-between items-start gap-4">
-                        <div className="flex-1 space-y-1">
-                          <div className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">Option 0{index + 1}</div>
-                          <p className="text-lg font-medium leading-relaxed">
-                            {hook}
-                          </p>
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-800">
+                    <Lightbulb className="h-5 w-5 text-yellow-500" />
+                    <h2 className="text-lg font-bold tracking-tight">Suggested Hooks</h2>
+                  </div>
+                  <div className="grid gap-4">
+                    {result.hooks.map((hook, index) => (
+                      <div 
+                        key={index}
+                        className="group relative glass-dark p-6 rounded-2xl hover:border-indigo-500/50 transition-all duration-300"
+                      >
+                        <div className="flex justify-between items-start gap-4">
+                          <div className="flex-1 space-y-1">
+                            <div className="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">Option 0{index + 1}</div>
+                            <p className="text-lg font-medium leading-relaxed text-slate-100">
+                              {hook}
+                            </p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => copyToClipboard(hook, index)}
+                            className="h-10 w-10 rounded-xl hover:bg-indigo-500/10 hover:text-indigo-500 transition-colors flex-none"
+                          >
+                            {copiedIndex === index ? (
+                              <CheckCircle2 className="h-5 w-5 text-green-500" />
+                            ) : (
+                              <Copy className="h-5 w-5" />
+                            )}
+                          </Button>
                         </div>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => copyToClipboard(hook, index)}
-                          className="h-10 w-10 rounded-xl hover:bg-indigo-500/10 hover:text-indigo-500 transition-colors"
-                        >
-                          {copiedIndex === index ? (
-                            <CheckCircle2 className="h-5 w-5 text-green-500" />
-                          ) : (
-                            <Copy className="h-5 w-5" />
-                          )}
-                        </Button>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
                 {/* Caption Section */}
-                <div className="space-y-4 pt-4">
-                  <div className="flex items-center gap-3">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 pb-2 border-b border-slate-800">
                     <MessageSquare className="h-5 w-5 text-indigo-500" />
-                    <h2 className="text-lg font-bold">Generated Caption</h2>
+                    <h2 className="text-lg font-bold tracking-tight">Generated Caption</h2>
                   </div>
-                  <div className="relative group glass dark:glass-dark p-6 rounded-2xl">
-                    <p className="text-slate-700 dark:text-slate-300 whitespace-pre-wrap leading-relaxed">
+                  <div className="relative group glass-dark p-6 rounded-3xl border-indigo-500/10 shadow-indigo-500/5 shadow-2xl">
+                    <p className="text-slate-300 whitespace-pre-wrap leading-relaxed text-lg">
                       {result.caption}
                     </p>
-                    <div className="flex flex-wrap gap-2 mt-6">
+                    <div className="flex flex-wrap gap-2 mt-8">
                       {result.hashtags.map((tag, i) => (
                         <span 
                           key={i}
-                          className="px-3 py-1 bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 rounded-lg text-xs font-bold border border-indigo-500/20"
+                          className="px-4 py-1.5 bg-indigo-500/10 text-indigo-400 rounded-xl text-xs font-bold border border-indigo-500/20"
                         >
                           {tag}
                         </span>
@@ -308,32 +278,32 @@ export default function Home() {
                       variant="ghost"
                       size="icon"
                       onClick={() => copyToClipboard(result.caption, 99)}
-                      className="absolute top-4 right-4 h-10 w-10 rounded-xl hover:bg-indigo-500/10 hover:text-indigo-500"
+                      className="absolute top-4 right-4 h-12 w-12 rounded-2xl hover:bg-indigo-500/10 hover:text-indigo-500"
                     >
                       {copiedIndex === 99 ? (
-                        <CheckCircle2 className="h-5 w-5 text-green-500" />
+                        <CheckCircle2 className="h-6 w-6 text-green-500" />
                       ) : (
-                        <Copy className="h-5 w-5" />
+                        <Copy className="h-6 w-6" />
                       )}
                     </Button>
                   </div>
                 </div>
 
                 {/* Strategy Cards */}
-                <div className="grid md:grid-cols-2 gap-6 pt-4">
-                  <div className="glass dark:glass-dark p-6 rounded-2xl border-l-4 border-l-indigo-500">
-                    <div className="flex items-center gap-3 mb-3 text-indigo-600 dark:text-indigo-400">
+                <div className="grid md:grid-cols-2 gap-6 pt-6 pb-12">
+                  <div className="glass-dark p-6 rounded-3xl border-l-4 border-l-indigo-500">
+                    <div className="flex items-center gap-3 mb-4 text-indigo-400">
                       <TrendingUp className="h-5 w-5" />
-                      <h3 className="font-bold uppercase text-xs tracking-wider">Engagement Strategy</h3>
+                      <h3 className="font-bold uppercase text-[10px] tracking-[0.2em]">Strategy</h3>
                     </div>
-                    <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                    <p className="text-sm leading-relaxed text-slate-400">
                       {result.engagementSuggestions}
                     </p>
                   </div>
-                  <div className="bg-slate-900 p-6 rounded-2xl border border-indigo-500/30 text-white glow-indigo">
-                    <div className="flex items-center gap-3 mb-3 text-indigo-400">
+                  <div className="bg-slate-900/50 p-6 rounded-3xl border border-indigo-500/20 glow-indigo">
+                    <div className="flex items-center gap-3 mb-4 text-indigo-400">
                       <Zap className="h-5 w-5" />
-                      <h3 className="font-bold uppercase text-xs tracking-wider">The Logic</h3>
+                      <h3 className="font-bold uppercase text-[10px] tracking-[0.2em]">Logic</h3>
                     </div>
                     <p className="text-sm leading-relaxed text-slate-300 italic">
                       "{result.analyticsFeedback}"
@@ -345,11 +315,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Floating Input Area (ChatGPT Style) */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-transparent dark:from-[#020617] dark:via-[#020617] dark:to-transparent pt-12 pb-8 px-4 z-20">
+        {/* Fixed Input Area (ChatGPT Style - Side by Side) */}
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#020617] via-[#020617] to-transparent pt-12 pb-10 px-6 z-30">
           <div className="max-w-3xl mx-auto relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl blur opacity-20 group-focus-within:opacity-40 transition duration-500" />
-            <div className="relative glass dark:glass-dark rounded-2xl p-2 flex flex-col items-end border-slate-200 dark:border-slate-800 group-focus-within:border-indigo-500/50 transition-all shadow-2xl">
+            <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-[2.5rem] blur opacity-10 group-focus-within:opacity-25 transition duration-700" />
+            <div className="relative glass-dark rounded-[2rem] p-3 flex items-end gap-3 border-slate-800 group-focus-within:border-indigo-500/50 transition-all shadow-2xl">
               <textarea
                 ref={textareaRef}
                 value={contentIdea}
@@ -360,33 +330,35 @@ export default function Home() {
                     handleGenerate();
                   }
                 }}
-                placeholder="Message Hookify..."
-                className="w-full bg-transparent border-0 focus:ring-0 resize-none py-3 px-4 text-lg min-h-[56px] max-h-[200px] placeholder:text-slate-400 dark:placeholder:text-slate-600"
+                placeholder="Describe your content idea..."
+                className="flex-1 bg-transparent border-0 focus:ring-0 resize-none py-4 px-5 text-lg min-h-[64px] max-h-[200px] placeholder:text-slate-600 text-white"
               />
-              <div className="flex items-center justify-between w-full px-2 pb-1">
-                <div className="text-[10px] text-slate-400 dark:text-slate-600 px-2">
-                  Shift + Enter for new line
-                </div>
-                <Button 
-                  onClick={handleGenerate}
-                  disabled={mutation.isPending || !contentIdea.trim()}
-                  className={cn(
-                    "h-10 w-10 rounded-xl transition-all glow-indigo",
-                    contentIdea.trim() ? "bg-indigo-600 text-white scale-100" : "bg-slate-200 dark:bg-slate-800 text-slate-400 scale-90"
-                  )}
-                  size="icon"
-                >
-                  {mutation.isPending ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    <Send className="h-5 w-5" />
-                  )}
-                </Button>
-              </div>
+              <Button 
+                onClick={handleGenerate}
+                disabled={mutation.isPending || !contentIdea.trim()}
+                className={cn(
+                  "h-14 w-14 rounded-2xl transition-all duration-300 flex-none mb-1",
+                  contentIdea.trim() 
+                    ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20 glow-indigo" 
+                    : "bg-slate-800 text-slate-600 opacity-50"
+                )}
+                size="icon"
+              >
+                {mutation.isPending ? (
+                  <Loader2 className="h-6 w-6 animate-spin" />
+                ) : (
+                  <Send className="h-6 w-6" />
+                )}
+              </Button>
             </div>
-            <p className="text-[10px] text-center mt-3 text-slate-400 dark:text-slate-600">
-              Hookify can make mistakes. Check important info.
-            </p>
+            <div className="flex justify-center gap-8 mt-4">
+              <p className="text-[10px] text-slate-600 uppercase tracking-[0.2em] font-medium">
+                Enter to Generate
+              </p>
+              <p className="text-[10px] text-slate-600 uppercase tracking-[0.2em] font-medium">
+                Shift + Enter for new line
+              </p>
+            </div>
           </div>
         </div>
       </main>
