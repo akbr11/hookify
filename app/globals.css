@@ -115,6 +115,28 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* Custom Futuristic Colors */
+  --glow-indigo: 0 0 20px rgba(99, 102, 241, 0.4);
+  --glow-purple: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+@layer utilities {
+  .glass {
+    @apply bg-white/10 backdrop-blur-lg border border-white/20 shadow-xl;
+  }
+  .glass-dark {
+    @apply bg-slate-900/40 backdrop-blur-xl border border-slate-800/50 shadow-2xl;
+  }
+  .glow-indigo {
+    box-shadow: var(--glow-indigo);
+  }
+  .glow-purple {
+    box-shadow: var(--glow-purple);
+  }
+  .text-glow {
+    text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  }
 }
 
 @layer base {
