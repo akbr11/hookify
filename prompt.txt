@@ -1,3 +1,0 @@
-Buatkan issue.md yang berisi perencanaan untuk nanti di implementasi oleh junior programmer atau model yang lebih murah.
-
-isi dari planning nya adalah sebagai berikut:
