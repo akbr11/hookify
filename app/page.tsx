@@ -34,6 +34,7 @@ interface HistoryEntry {
 
 import { useEffect, useRef } from "react";
 import { Menu, History, Plus, Send } from "lucide-react";
+import Image from "next/image";
 
 export default function Home() {
   const [contentIdea, setContentIdea] = useState("");
@@ -132,8 +133,13 @@ export default function Home() {
       {/* Header */}
       <header className="flex-none flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-[#020617]/80 backdrop-blur-md z-30">
         <div className="flex items-center gap-3 group">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white glow-indigo group-hover:scale-110 transition-transform">
-            <Zap className="h-5 w-5 fill-current" />
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl overflow-hidden group-hover:scale-110 transition-transform relative">
+            <Image 
+              src="/hookify.png" 
+              alt="Hookify Logo" 
+              fill
+              className="object-cover"
+            />
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold tracking-tight text-glow">
