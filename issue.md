@@ -1,43 +1,39 @@
-# 🚀 Task: UI/UX Redesign Halaman Utama Hookify (Dark Mode & Single Column)
+# Issue: Mengganti Logo Hookify
 
-## 📝 Deskripsi
-Tugas ini bertujuan untuk merombak tampilan antarmuka (UI) halaman utama aplikasi **Hookify** agar terlihat lebih modern, simpel, dan futuristik dengan fokus pada **Dark Mode**. Desain interaksi utama harus dibuat se-intuitif mungkin, dengan layout satu kolom penuh (**tanpa sidebar**) yang terinspirasi dari alur antarmuka ChatGPT.
+## Deskripsi Tugas
+Tugas ini bertujuan untuk mengganti logo default yang ada di dalam project dengan logo baru. Pekerjaan ini melibatkan penambahan aset gambar dan pembaruan komponen di halaman utama.
 
-## 🎯 Spesifikasi Kebutuhan (Requirements)
+## Langkah-langkah Implementasi
 
-1. **Header & Branding (Bagian Atas)**
-   - Tampilkan logo kecil/ikonik "Hookify".
-   - Tampilkan nama project "Hookify" dengan gaya tipografi yang modern dan futuristik.
-   - Desain header harus *minimalist*, ditempatkan di paling atas, dan terintegrasi mulus dengan latar belakang gelap.
+1. **Tambahkan Aset Logo ke Folder Public**
+   - Tempatkan/ganti file logo baru dengan nama `hookify.png` di dalam direktori `public/` pada root project (`public/hookify.png`).
 
-2. **Tema Visual Utama (Styling)**
-   - **Gaya:** Simple, Bersih, dan Futuristik.
-   - **Warna Utama:** Wajib menggunakan **Dark Mode** (latar belakang gelap, teks terang). Tambahkan aksen warna futuristik (misalnya border tipis bercahaya/*glow* atau efek *glassmorphism* transparan).
+2. **Perbarui Logo di Halaman Utama (`app/page.tsx`)**
+   - Buka file `app/page.tsx`.
+   - Import komponen `Image` dari `next/image` di bagian atas file:
+     ```tsx
+     import Image from "next/image";
+     ```
+   - Cari bagian kode header yang menampilkan logo saat ini. Saat ini menggunakan icon `Zap` dari `lucide-react` (berada di sekitar baris 135-137):
+     ```tsx
+     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white glow-indigo group-hover:scale-110 transition-transform">
+       <Zap className="h-5 w-5 fill-current" />
+     </div>
+     ```
+   - Ganti *container* dan icon tersebut dengan tag `<Image />` yang mengarah ke `/hookify.png`. Sesuaikan styling (ukuran dan border) agar terlihat harmonis, contohnya:
+     ```tsx
+     <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl group-hover:scale-110 transition-transform relative">
+       <Image 
+         src="/hookify.png" 
+         alt="Hookify Logo" 
+         fill
+         className="object-cover"
+       />
+     </div>
+     ```
+   - Hapus import `Zap` dari `lucide-react` di bagian atas file **hanya jika** icon tersebut tidak lagi digunakan di tempat lain (perhatikan bahwa icon `Zap` sepertinya juga digunakan di tempat lain seperti di area loading dan area "Logic", jadi mungkin import-nya sebaiknya dibiarkan saja).
 
-3. **Riwayat Prompt (Prompt History - Area Scroll)**
-   - **PENTING: Tidak usah menggunakan sidebar.**
-   - Tempatkan rekaman prompt sebelumnya (*history*) di area utama halaman, tepat di bawah header dan di atas area input.
-   - Area ini harus dapat di-*scroll* (scrollable) secara vertikal sehingga pengguna bisa melihat riwayat lama tanpa harus berpindah halaman atau membuka menu samping.
-
-4. **Area Interaksi / Input Prompt (Bagian Bawah)**
-   - Implementasikan komponen `textarea` dan tombol kirim (Submit/Send) dengan gaya **ChatGPT**.
-   - Posisikan area input ini tetap (*fixed* atau *sticky*) di bagian bawah layar.
-   - `textarea` harus bisa membesar (auto-resize) secara otomatis menyesuaikan panjang teks.
-   - **Tombol Kirim:** Harus diletakkan **berdampingan** dengan `textarea` (di sebelah kanannya) atau menyatu elegan di sudut kanan dalam kotak input, sama persis seperti tata letak ChatGPT.
-
-## 🛠 Panduan Teknis Implementasi (Untuk Programmer/AI)
-- Manfaatkan *utility classes* (misalnya dari Tailwind CSS) untuk mengatur *Dark Mode* secara konsisten.
-- Untuk struktur *layout*, sangat disarankan menggunakan arsitektur *Flexbox* (kolom) dengan tinggi layar penuh (`h-screen` atau `100dvh`), di mana:
-  - Header mengambil ruang secukupnya (`flex-none`).
-  - Area Riwayat (History) mengambil sisa ruang yang ada dan dapat di-*scroll* (`flex-1 overflow-y-auto`).
-  - Area Input berada di paling bawah (`flex-none`).
-- Pastikan tampilan sepenuhnya **responsif** dan nyaman digunakan di perangkat *mobile* maupun *desktop*.
-
-## ✅ Kriteria Penerimaan (Acceptance Criteria)
-- [ ] Keseluruhan tampilan sudah menggunakan *Dark Mode*, terasa *simple*, dan *futuristic*.
-- [ ] Header berisi logo dan nama "Hookify" terpasang rapi di bagian atas.
-- [ ] **Tidak ada sidebar**.
-- [ ] Riwayat prompt tampil berderet ke bawah di area utama dan bisa di-scroll.
-- [ ] Area input berada di bagian bawah.
-- [ ] *Textarea* dan tombol *send* posisinya saling berdampingan ala ChatGPT.
-- [ ] Komponen input mendukung *auto-resize*.
+## Kriteria Penerimaan (Acceptance Criteria)
+- [ ] File `hookify.png` sudah ada di folder `public/`.
+- [ ] Logo di header pojok kiri atas halaman utama (`app/page.tsx`) berhasil berubah menjadi gambar `hookify.png`.
+- [ ] Gambar tampil proporsional, tidak distorsi, dan efek *scale* saat hover tetap berfungsi.
